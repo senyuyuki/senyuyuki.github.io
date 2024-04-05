@@ -11,16 +11,17 @@
         });
         sentest.hookFunction('ChatRoomMessage', 0, (args, next) => {
             const message = args[0];
-            if (message.Type === "Chat" && message.Content === "HelloWorld") {
-               sendCustomChatMessage("HiWorld");
+            if (message.Type === "Whisper" && message.Content === "抽一张塔罗牌") {
+                sendCustomChatMessage("这是返回", message.sender);
             }
             return next(args);
         });
-        function sendCustomChatMessage(messageContent) {
+        function sendCustomChatMessage(messageContent, userId) {
             if (typeof ServerSend === "function") {
                 const message = {
                     Type: "Chat",
                     Content: messageContent,
+                    Target: userId
                 };
             ServerSend("ChatRoomChat", message);
             console.log("Reply sent:", messageContent);
@@ -28,5 +29,8 @@
             else {
                 console.error("ServerSend function is not available.");
             }
+        }
+        function RandomNum() {
+            return Math.floor(Math.random() * 44) + 1;
         }
 })();
