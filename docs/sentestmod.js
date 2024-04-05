@@ -60,7 +60,7 @@
             if (message.Type === "Whisper" && message.Content === "今日塔罗牌") {
                 let tarotMes = Tarot[RandomTarot()];
                 console.log(message)
-                sendWhisperChatMessage(tarotMes, message.sender);
+                sendWhisperChatMessage(tarotMes, message.Sender);
             }
             return next(args);
         });
