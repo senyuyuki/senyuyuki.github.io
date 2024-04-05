@@ -19,7 +19,7 @@
         function sendCustomChatMessage(messageContent, userId) {
             if (typeof ServerSend === "function") {
                 const message = {
-                    Type: "Chat",
+                    Type: "Whisper",
                     Content: messageContent,
                     Target: userId
                 };
