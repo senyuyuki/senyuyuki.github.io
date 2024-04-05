@@ -11,7 +11,7 @@
         });
         sentest.hookFunction('ChatRoomMessage', 0, (args, next) => {
             const message = args[0];
-            if (message.Type === "Whisper" && message.Content === "抽一张塔罗牌") {
+            if (message.Type === "Whisper" && message.Content === "今日塔罗") {
                 Num = RandomNum()
                 sendCustomChatMessage(`这是返回${Num}`, message.sender);
             }
