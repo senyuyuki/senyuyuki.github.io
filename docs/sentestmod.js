@@ -4,7 +4,7 @@
         const sentest = bcModSdk.registerMod({
             name: 'SENTEST',
             fullName: 'Selenslusa_Test_Mod',
-            version: '0.1',
+            version: '0.2',
             // Optional - Link to the source code of the mod
             repository: 'https://github.com/senyuyuki/senyuyuki.github.io/tree/main/docs/sentestmod.js',
         });
@@ -66,7 +66,7 @@
             const playerId = args[0].Character.MemberNumber;
             const welMes = {
                 Type: "Whisper",
-                Content: "你好~可点击咱名字私聊发送“今日塔罗牌”抽取一张塔罗牌并查看大致含义（此消息自动发送）",
+                Content: "你好~可点击咱名字私聊发送“今日塔罗牌”抽取一张塔罗牌并查看大致含义（此消息自动发送，抱歉暂时没写关闭逻辑）",
                 Target: playerId
             }
             ServerSend("ChatRoomChat", welMes);
