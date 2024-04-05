@@ -12,8 +12,14 @@
         sentest.hookFunction('ChatRoomMessage', 0, (args, next) => {
             const message = args[0];
             if (message.Type === "Whisper" && message.Content === "抽一张塔罗牌") {
-                sendCustomChatMessage("这是返回", message.sender);
+                Num = RandomNum()
+                sendCustomChatMessage(`这是返回${Num}`, message.sender);
             }
+            return next(args);
+        });
+        sentest.hookFunction("ChatRoomSyncMemberJoin", 0, (args, next) => {
+            const playerId = args[0].Character.MemberNumber;
+            ServerSend("ChatRoomChat", { Content: "A new player has joined: " + playerId, Type: "Chat" });
             return next(args);
         });
         function sendCustomChatMessage(messageContent, userId) {
