@@ -57,7 +57,7 @@
         sentest.hookFunction('ChatRoomMessage', 0, (args, next) => {
             const message = args[0];
             if (message.Type === "Whisper" && message.Content === "今日塔罗牌") {
-                tarotMes = Tarot[RandomTarot()];
+                let tarotMes = Tarot[RandomTarot()];
                 sendWhisperChatMessage(tarotMes, message.sender);
             }
             return next(args);
