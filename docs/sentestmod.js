@@ -8,6 +8,7 @@
             // Optional - Link to the source code of the mod
             repository: 'https://github.com/senyuyuki/senyuyuki.github.io/tree/main/docs/sentestmod.js',
         });
+        var nowuserid;
         var Tarot = [
             "愚者正位，代表自发行为的塔罗牌，一段跳脱某种状态的日子，或尽情享受眼前日子的一段时光。好冒险，有梦想，不拘泥于传统的观念，自由奔放，居无定所，一切从基础出发。当你周遭的人都对某事提防戒慎，你却打算去冒这个险时，愚人牌可能就会出现。愚人暗示通往成功之路是经由自发的行动，而长期的计划则是将来的事。",
             "愚者逆位，暗示当你被要求有所承诺时，却想从责任当中寻求解脱。你正在找一个脱身之道，然而目前并不是这么做的时机。现在是你对自己的将来有所承诺，或是解决过去问题的时候了，如此你才能够重新过着自发性的生活。在你能够安全出发之前，还有某些未完成的事情需要你去处理。",
@@ -53,12 +54,13 @@
             "审判逆位，你正在找寻某些东西，以填补命中越来越大的鸿沟。你并不知道这个召唤是来自内心，也不知道解决方法也来自内心。简单说，这张牌指明了阻碍你的是缺乏清晰的判断力。",
             "世界正位，意指重大的成功及快乐。就变通的角度而言，它暗示你就站在生命希望你站的地方，而你也能感受到生命及你周遭的人的支持。它描述着一种快乐，它不是来自拥有或耕耘，而是来自存在。",
             "世界逆位，这是一个思绪有些烦乱的时期，但现实本质上却并不糟糕，因此只要重整思路就可以顺利前进，比现在看来更大的成功也是可能实现的。另外世界逆位也有可能是巨大的成功已经过去的意思，这种情况下，你也许会有心理落差，也许只是想好好休息一阵，一切就得看你的感受了。"
-        ]
+        ];
         sentest.hookFunction('ChatRoomMessage', 0, (args, next) => {
             const message = args[0];
+            nowuserid = message.MemberNumber;
             if (message.Type === "Whisper" && message.Content === "今日塔罗牌") {
                 let tarotMes = Tarot[RandomTarot()];
-                sendWhisperChatMessage(tarotMes, message.sender);
+                sendWhisperChatMessage(tarotMes, nowuserid);
             }
             return next(args);
         });
