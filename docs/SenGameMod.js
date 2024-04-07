@@ -8,15 +8,9 @@
             // Optional - Link to the source code of the mod
             repository: 'https://github.com/senyuyuki',
         });
-        sengame.hookFunction(
-            "ChatRoomMenuDraw",
-            0,
-            (args, next) => {
+        sengame.hookFunction("ChatRoomMenuDraw",0,(args, next) => {
+                DrawButton(965, 825, 40, 40, "T", "#FFFFFF");
                 next(args);
-                if(NeedShowButton())
-                {
-                    DrawButton(965, 825, 40, 40, "T", "#FFFFFF");
-                }
             }
         );
 })();
