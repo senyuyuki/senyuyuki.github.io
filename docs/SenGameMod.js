@@ -17,12 +17,11 @@
         );
         sengame.hookFunction("ChatRoomClick",0,(args, next) => {
             if (MouseIn(965, 500, 40, 40)) {
-                if(!window.windowIsOpen)
-                {
+                if(!window.windowIsOpen) {
                     createWindow();
+                    insertTextIntoWindow("这是测试文本");
                 }
-                else
-                {
+                else {
                     closeWindow();
                 }
                 return;
@@ -40,7 +39,7 @@
         window.tarot.tarotWindow = document.createElement("div");
         window.tarot.tarotWindow.style.position="fixed";
         window.tarot.tarotWindow.style.width="500px";
-        window.tarot.tarotWindow.style.height="500px";
+        window.tarot.tarotWindow.style.height="300px";
         window.tarot.tarotWindow.style.backgroundColor="#fff";
         window.tarot.tarotWindow.style.border="1px solid #ccc";
         window.tarot.tarotWindow.style.top="50%";
@@ -49,9 +48,28 @@
         window.tarot.tarotWindow.style.overflow="hidden";
         window.tarot.tarotWindow.style.zIndex="2333";
         document.body.appendChild(window.tarot.tarotWindow);
+        var button = document.createElement("button");
+        button.textContent = "添加文本";
+        button.style.margin = "10px";
+        button.addEventListener("click", function() {
+            insertTextIntoWindow("这是通过点击按钮添加的文本。");
+        });
+        window.tarot.tarotWindow.appendChild(button);
+        document.body.appendChild(window.tarot.tarotWindow);
     }
     function closeWindow(){
         window.windowIsOpen = false;
         document.body.removeChild(window.tarot.tarotWindow);
+    }
+    function insertTextIntoWindow(text) {
+        if (window.tarot && window.tarot.tarotWindow) {
+            var paragraph = document.createElement("p");
+            paragraph.style.color = "black";
+            paragraph.style.margin = "10px";
+            paragraph.textContent = text;
+            window.tarot.tarotWindow.appendChild(paragraph);
+        }
+        else {
+        }
     }
 })();
