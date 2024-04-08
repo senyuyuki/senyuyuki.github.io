@@ -11,6 +11,7 @@
         window.tarot = {};
         window.windowIsOpen = false;
         window.textIsExist = false;
+        var tarotMes = ""
         var Tarot = [
             "愚者正位，代表自发行为的塔罗牌，一段跳脱某种状态的日子，或尽情享受眼前日子的一段时光。好冒险，有梦想，不拘泥于传统的观念，自由奔放，居无定所，一切从基础出发。当你周遭的人都对某事提防戒慎，你却打算去冒这个险时，愚人牌可能就会出现。愚人暗示通往成功之路是经由自发的行动，而长期的计划则是将来的事。",
             "愚者逆位，暗示当你被要求有所承诺时，却想从责任当中寻求解脱。你正在找一个脱身之道，然而目前并不是这么做的时机。现在是你对自己的将来有所承诺，或是解决过去问题的时候了，如此你才能够重新过着自发性的生活。在你能够安全出发之前，还有某些未完成的事情需要你去处理。",
@@ -86,8 +87,8 @@
         window.tarot.tarotWindow.style.position="fixed";
         window.tarot.tarotWindow.style.width="500px";
         window.tarot.tarotWindow.style.height="300px";
-        window.tarot.tarotWindow.style.backgroundColor="#fff";
-        window.tarot.tarotWindow.style.border="1px solid #ccc";
+        window.tarot.tarotWindow.style.backgroundColor="#c8c4aa";
+        window.tarot.tarotWindow.style.border="2px dashed #264499";
         window.tarot.tarotWindow.style.top="50%";
         window.tarot.tarotWindow.style.left="50%";
         //window.tarot.tarotWindow.style.transform="translate(-50%,50%)";
@@ -97,12 +98,16 @@
         document.body.appendChild(window.tarot.tarotWindow);
         var button = document.createElement("button");
         button.textContent = "抽取塔罗牌";
-        button.style.margin = "10px";
+        button.style.margin = "20px";
         button.addEventListener("click", function() {
             if(!window.textIsExist){
-                let tarotMes = Tarot[RandomTarot()];
+                tarotMes = Tarot[RandomTarot()];
                 window.textIsExist = true;
                 insertTextIntoWindow(tarotMes);
+            }
+            else{
+                insertTextIntoWindow(`今日已经抽取过塔罗牌：
+                ${tarotMes}`);
             }
         });
         window.tarot.tarotWindow.appendChild(button);
@@ -114,11 +119,12 @@
     }
     function insertTextIntoWindow(text) {
         if (window.tarot && window.tarot.tarotWindow) {
-            var paragraph = document.createElement("p");
-            paragraph.style.color = "black";
-            paragraph.style.margin = "10px";
-            paragraph.textContent = text;
-            window.tarot.tarotWindow.appendChild(paragraph);
+            var tarotShow = document.createElement("p");
+            tarotShow.style.color = "black";
+            tarotShow.paragraph.style.margin = "10px";
+            tarotShow.paragraph.style.textAlign = "center";
+            tarotShow.paragraph.textContent = text;
+            window.tarot.tarotWindow.appendChild(tarotShow);
         }
         else {
         }
