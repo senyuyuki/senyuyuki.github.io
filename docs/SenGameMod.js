@@ -145,7 +145,6 @@
         window.gameWindowIsOpen = true;
         var lpdButton = document.createElement("button");
         lpdButton.textContent = "捆缚轮盘赌";
-        lpdButton.textContent.style.textAlign = "center";
         lpdButton.style.margin = "25px";
         lpdButton.style.width = "100px";
         lpdButton.style.height = "20px";
