@@ -19,11 +19,9 @@
                     if(!window.windowIsOpen)
                     {
                         createWindow();
-                        SendState();     
                     }
                     else
                     {
-                        closeWindow();
                     }
                     return;
                 }            
