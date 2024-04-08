@@ -68,38 +68,47 @@
             }
         );
         sengame.hookFunction("ChatRoomClick",0,(args, next) => {
-            closeWindow();
             if (MouseIn(965, 500, 40, 40)) {
-                window.tarot.tarotWindow = document.createElement("div");
-                window.tarot.tarotWindow.style.position="fixed";
-                window.tarot.tarotWindow.style.width="500px";
-                window.tarot.tarotWindow.style.height="300px";
-                window.tarot.tarotWindow.style.backgroundColor="#c8c4aa";
-                window.tarot.tarotWindow.style.border="2px dashed #264499";
-                window.tarot.tarotWindow.style.top="50%";
-                window.tarot.tarotWindow.style.left="50%";
-                window.tarot.tarotWindow.style.transform="translate(0%,0%)";
-                window.tarot.tarotWindow.style.resize="both";
-                window.tarot.tarotWindow.style.overflow="hidden";
-                window.tarot.tarotWindow.style.zIndex="2333";
-                document.body.appendChild(window.tarot.tarotWindow);
-                createTarot();
+                if(!window.tarotWindowIsOpen) {
+                    window.tarot.tarotWindow = document.createElement("div");
+                    window.tarot.tarotWindow.style.position="fixed";
+                    window.tarot.tarotWindow.style.width="500px";
+                    window.tarot.tarotWindow.style.height="300px";
+                    window.tarot.tarotWindow.style.backgroundColor="#c8c4aa";
+                    window.tarot.tarotWindow.style.border="2px dashed #264499";
+                    window.tarot.tarotWindow.style.top="50%";
+                    window.tarot.tarotWindow.style.left="50%";
+                    window.tarot.tarotWindow.style.transform="translate(0%,0%)";
+                    window.tarot.tarotWindow.style.resize="both";
+                    window.tarot.tarotWindow.style.overflow="hidden";
+                    window.tarot.tarotWindow.style.zIndex="2333";
+                    document.body.appendChild(window.tarot.tarotWindow);
+                    createTarot();
+                }
+                else {
+                    closeWindow();
+                }
             }
             else if (MouseIn(965, 460, 40, 40)) {
-                window.game.gameWindow = document.createElement("div");
-                window.game.gameWindow.style.position="fixed";
-                window.game.gameWindow.style.width="100px";
-                window.game.gameWindow.style.height="400px";
-                window.game.gameWindow.style.backgroundColor="#c8c4aa";
-                window.game.gameWindow.style.border="2px dashed #264499";
-                window.game.gameWindow.style.top="50%";
-                window.game.gameWindow.style.left="50%";
-                window.game.gameWindow.style.transform="translate(0%,0%)";
-                window.game.gameWindow.style.resize="both";
-                window.game.gameWindow.style.overflow="hidden";
-                window.game.gameWindow.style.zIndex="2333";
-                document.body.appendChild(window.game.gameWindow);
-                createGame();
+                if(!window.gameWindowIsOpen) {
+                    window.game.gameWindow = document.createElement("div");
+                    window.game.gameWindow.style.position="fixed";
+                    window.game.gameWindow.style.width="150px";
+                    window.game.gameWindow.style.height="400px";
+                    window.game.gameWindow.style.backgroundColor="#c8c4aa";
+                    window.game.gameWindow.style.border="2px dashed #264499";
+                    window.game.gameWindow.style.top="50%";
+                    window.game.gameWindow.style.left="50%";
+                    window.game.gameWindow.style.transform="translate(0%,0%)";
+                    window.game.gameWindow.style.resize="both";
+                    window.game.gameWindow.style.overflow="hidden";
+                    window.game.gameWindow.style.zIndex="2333";
+                    document.body.appendChild(window.game.gameWindow);
+                    createGame();
+                }
+                else {
+                    closeWindow();
+                }
             }
             next(args);
         })
@@ -135,10 +144,11 @@
     function createGame(){
         window.gameWindowIsOpen = true;
         var lpdButton = document.createElement("button");
-        lpdButton.textContent = "捆缚轮盘赌"
-        lpdButton.style.margin = "10px";
-        lpdButton.style.width = "80px";
-        lpdButton.style.height = "20px"
+        lpdButton.textContent = "捆缚轮盘赌";
+        lpdButton.textContent.style.textAlign = "center";
+        lpdButton.style.margin = "25px";
+        lpdButton.style.width = "100px";
+        lpdButton.style.height = "20px";
         lpdButton.addEventListener("click", function(){
             lpdIsWaiting = 1;
             ServerSend("ChatRoomChat", {Content:`开启了一个捆缚轮盘赌游戏房间，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
