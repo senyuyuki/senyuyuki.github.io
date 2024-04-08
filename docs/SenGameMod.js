@@ -39,7 +39,7 @@
             window.tarot.tarotWindow.style.top="50%";
             window.tarot.tarotWindow.style.left="50%";
             window.tarot.tarotWindow.style.transform="translate(-50%,50%)";
-            window.tarot.tarotWindow.style.overflow="hidden"
-            window.tarot.tarotWindow.style.zIndex="9999"
+            window.tarot.tarotWindow.style.overflow="hidden";
+            window.tarot.tarotWindow.style.zIndex="9999";
         }
 })();
