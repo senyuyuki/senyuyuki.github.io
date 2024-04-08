@@ -100,6 +100,12 @@
         button.textContent = "抽取塔罗牌";
         button.style.margin = "20px";
         button.addEventListener("click", function() {
+            var children = window.tarot.tarotWindow.childNodes;
+            var i = children.length;
+            while (i--) {
+                var child = children[i];
+                window.tarot.tarotWindow.removeChild(child);
+            }
             if(!window.textIsExist){
                 console.log("写入文字函数调用")
                 tarotMes = Tarot[RandomTarot()];
@@ -123,9 +129,9 @@
         if (window.tarot && window.tarot.tarotWindow) {
             var tarotShow = document.createElement("p");
             tarotShow.style.color = "black";
-            tarotShow.paragraph.style.margin = "10px";
-            tarotShow.paragraph.style.textAlign = "center";
-            tarotShow.paragraph.textContent = text;
+            tarotShow.style.margin = "10px";
+            tarotShow.style.textAlign = "center";
+            tarotShow.textContent = text;
             window.tarot.tarotWindow.appendChild(tarotShow);
         }
         else {
