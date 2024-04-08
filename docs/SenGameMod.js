@@ -101,6 +101,7 @@
         document.body.appendChild(window.tarot.tarotWindow);
     }
     function createTarot(){
+        window.tarotWindowIsOpen = true;
         var tarotButton = document.createElement("button");
         tarotButton.textContent = "抽取塔罗牌";
         tarotButton.style.margin = "20px";
@@ -124,6 +125,7 @@
         document.body.appendChild(window.tarot.tarotWindow);
     }
     function createGame(){
+        window.gameWindowIsOpen = true;
         var lpdButton = document.createElement("button");
         lpdButton.textContent = "捆缚轮盘赌"
         lpdButton.style.margin = "10px";
@@ -135,8 +137,12 @@
         })
     }
     function closeWindow(){
-        document.body.removeChild(window.tarot.tarotWindow);
-        document.body.removeChild(window.game.gameWindow);
+        if (window.tarotWindowIsOpen == true){
+            document.body.removeChild(window.tarot.tarotWindow);
+        }
+        else if (window.gameWindowIsOpen == true){
+            document.body.removeChild(window.game.gameWindow);
+        }
     }
     function insertTextIntoWindow(text) {
         if (window.tarot && window.tarot.tarotWindow) {
