@@ -9,8 +9,37 @@
             repository: 'https://github.com/senyuyuki',
         });
         sengame.hookFunction("ChatRoomMenuDraw",0,(args, next) => {
-                DrawButton(965, 825, 40, 40, "T", "#FFFFFF");
+                DrawButton(965, 500, 40, 40, "T", "#FFFFFF");
                 next(args);
             }
         );
+        sengame.hookFunction("ChatRoomClick",0,(args, next) => {
+                if (NeedShowButton() && MouseIn(965, 500, 40, 40)) {
+                    if(!window.windowIsOpen)
+                    {
+                        createWindow();
+                        SendState();     
+                    }
+                    else
+                    {
+                        closeWindow();
+                    }
+                    return;
+                }            
+                next(args);
+            }
+        );
+        function createWindow(){
+            window.tarot.tarotWindow = document.createElement("div");
+            window.tarot.tarotWindow.style.position="fixed";
+            window.tarot.tarotWindow.style.width="300px";
+            window.tarot.tarotWindow.style.height="200px";
+            window.tarot.tarotWindow.style.backgroundcolor="#fff";
+            window.tarot.tarotWindow.style.border="1px solid #ccc";
+            window.tarot.tarotWindow.style.top="50%";
+            window.tarot.tarotWindow.style.left="50%";
+            window.tarot.tarotWindow.style.transform="translate(-50%,50%)";
+            window.tarot.tarotWindow.style.overflow="hidden"
+            window.tarot.tarotWindow.style.zIndex="9999"
+        }
 })();
