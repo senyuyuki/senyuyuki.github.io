@@ -9,9 +9,12 @@
             repository: 'https://github.com/senyuyuki',
         });
         window.tarot = {};
-        window.windowIsOpen = false;
+        window.game = {};
+        window.tarotWindowIsOpen = false;
+        window.gameWindowIsOpen = false;
         window.textIsExist = false;
-        var tarotMes = ""
+        var lpdIsWaiting = 0;
+        var tarotMes = "";
         var Tarot = [
             "愚者正位，代表自发行为的塔罗牌，一段跳脱某种状态的日子，或尽情享受眼前日子的一段时光。好冒险，有梦想，不拘泥于传统的观念，自由奔放，居无定所，一切从基础出发。当你周遭的人都对某事提防戒慎，你却打算去冒这个险时，愚人牌可能就会出现。愚人暗示通往成功之路是经由自发的行动，而长期的计划则是将来的事。",
             "愚者逆位，暗示当你被要求有所承诺时，却想从责任当中寻求解脱。你正在找一个脱身之道，然而目前并不是这么做的时机。现在是你对自己的将来有所承诺，或是解决过去问题的时候了，如此你才能够重新过着自发性的生活。在你能够安全出发之前，还有某些未完成的事情需要你去处理。",
@@ -60,19 +63,20 @@
         ];
         sengame.hookFunction("ChatRoomMenuDraw",0,(args, next) => {
                 DrawButton(965, 500, 40, 40, "🎴", "#FFFFFF");
+                DrawButton(965, 460, 40, 40, "🎮", "#FFFFFF");
                 next(args);
             }
         );
         sengame.hookFunction("ChatRoomClick",0,(args, next) => {
+            closeWindow();
             if (MouseIn(965, 500, 40, 40)) {
-                if(!window.windowIsOpen) {
-                    createWindow();
-                }
-                else {
-                    closeWindow();
-                }
-                return;
-            }         
+                createWindow("fixed","500px","300px","#c8c4aa","2px dashed #264499","50%","50%","translate(0%,0%)");
+                createTarot();
+            }
+            else if (MouseIn(965, 460, 40, 40)) {
+                createWindow("fixed","100px","400px","#c8c4aa","2px dashed #264499","50%","50%","translate(0%,0%)");
+                createGame();
+            }
             next(args);
         })
         sengame.hookFunction("ChatRoomLeave",0,(args,next) => {
@@ -81,25 +85,26 @@
             }
             next(args);
         })
-    function createWindow(){
-        window.windowIsOpen = true;
+    function createWindow(pos, wid, hei, bacCol, bor, top, lef, trans){
         window.tarot.tarotWindow = document.createElement("div");
-        window.tarot.tarotWindow.style.position="fixed";
-        window.tarot.tarotWindow.style.width="500px";
-        window.tarot.tarotWindow.style.height="300px";
-        window.tarot.tarotWindow.style.backgroundColor="#c8c4aa";
-        window.tarot.tarotWindow.style.border="2px dashed #264499";
-        window.tarot.tarotWindow.style.top="50%";
-        window.tarot.tarotWindow.style.left="50%";
-        //window.tarot.tarotWindow.style.transform="translate(-50%,50%)";
+        window.tarot.tarotWindow.style.position=pos;
+        window.tarot.tarotWindow.style.width=wid;
+        window.tarot.tarotWindow.style.height=hei;
+        window.tarot.tarotWindow.style.backgroundColor=bacCol;
+        window.tarot.tarotWindow.style.border=bor;
+        window.tarot.tarotWindow.style.top=top;
+        window.tarot.tarotWindow.style.left=lef;
+        window.tarot.tarotWindow.style.transform=trans;
         window.tarot.tarotWindow.style.resize="both";
         window.tarot.tarotWindow.style.overflow="hidden";
         window.tarot.tarotWindow.style.zIndex="2333";
         document.body.appendChild(window.tarot.tarotWindow);
-        var button = document.createElement("button");
-        button.textContent = "抽取塔罗牌";
-        button.style.margin = "20px";
-        button.addEventListener("click", function() {
+    }
+    function createTarot(){
+        var tarotButton = document.createElement("button");
+        tarotButton.textContent = "抽取塔罗牌";
+        tarotButton.style.margin = "20px";
+        tarotButton.addEventListener("click", function() {
             var children = window.tarot.tarotWindow.childNodes;
             var i = children.length;
             while (i--) {
@@ -107,29 +112,37 @@
                 window.tarot.tarotWindow.removeChild(child);
             }
             if(!window.textIsExist){
-                console.log("写入文字函数调用")
                 tarotMes = Tarot[RandomTarot()];
                 window.textIsExist = true;
                 insertTextIntoWindow(tarotMes);
             }
             else{
-                insertTextIntoWindow(`今日已经抽取过塔罗牌：
-                ${tarotMes}`);
+                insertTextIntoWindow(`今日已经抽取过塔罗牌：\n${tarotMes}`);
             }
-        });
+        })
         window.tarot.tarotWindow.appendChild(button);
         document.body.appendChild(window.tarot.tarotWindow);
     }
+    function createGame(){
+        var lpdButton = document.createElement("button");
+        lpdButton.textContent = "捆缚轮盘赌"
+        lpdButton.style.margin = "10px";
+        lpdButton.style.width = "80px";
+        lpdButton.style.height = "20px"
+        lpdButton.addEventListener("click", function(){
+            lpdIsWaiting = 1;
+            ServerSend("ChatRoomChat", {Content:`开启了一个捆缚轮盘赌游戏房间，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
+        })
+    }
     function closeWindow(){
-        window.windowIsOpen = false;
         document.body.removeChild(window.tarot.tarotWindow);
+        document.body.removeChild(window.game.gameWindow);
     }
     function insertTextIntoWindow(text) {
-        console.log("写入中")
         if (window.tarot && window.tarot.tarotWindow) {
             var tarotShow = document.createElement("p");
             tarotShow.style.color = "black";
-            tarotShow.style.margin = "10px";
+            tarotShow.style.margin = "15px";
             tarotShow.style.textAlign = "center";
             tarotShow.textContent = text;
             window.tarot.tarotWindow.appendChild(tarotShow);
