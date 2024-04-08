@@ -86,19 +86,19 @@
                 createTarot();
             }
             else if (MouseIn(965, 460, 40, 40)) {
-                window.tarot.tarotWindow = document.createElement("div");
-                window.tarot.tarotWindow.style.position="fixed";
-                window.tarot.tarotWindow.style.width="100px";
-                window.tarot.tarotWindow.style.height="400px";
-                window.tarot.tarotWindow.style.backgroundColor="#c8c4aa";
-                window.tarot.tarotWindow.style.border="2px dashed #264499";
-                window.tarot.tarotWindow.style.top="50%";
-                window.tarot.tarotWindow.style.left="50%";
-                window.tarot.tarotWindow.style.transform="translate(0%,0%)";
-                window.tarot.tarotWindow.style.resize="both";
-                window.tarot.tarotWindow.style.overflow="hidden";
-                window.tarot.tarotWindow.style.zIndex="2333";
-                document.body.appendChild(window.tarot.tarotWindow);
+                window.game.gameWindow = document.createElement("div");
+                window.game.gameWindow.style.position="fixed";
+                window.game.gameWindow.style.width="100px";
+                window.game.gameWindow.style.height="400px";
+                window.game.gameWindow.style.backgroundColor="#c8c4aa";
+                window.game.gameWindow.style.border="2px dashed #264499";
+                window.game.gameWindow.style.top="50%";
+                window.game.gameWindow.style.left="50%";
+                window.game.gameWindow.style.transform="translate(0%,0%)";
+                window.game.gameWindow.style.resize="both";
+                window.game.gameWindow.style.overflow="hidden";
+                window.game.gameWindow.style.zIndex="2333";
+                document.body.appendChild(window.game.gameWindow);
                 createGame();
             }
             next(args);
