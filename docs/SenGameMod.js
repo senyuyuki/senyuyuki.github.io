@@ -8,6 +8,7 @@
             // Optional - Link to the source code of the mod
             repository: 'https://github.com/senyuyuki',
         });
+        window.tarot = {};
         sengame.hookFunction("ChatRoomMenuDraw",0,(args, next) => {
                 DrawButton(965, 500, 40, 40, "T", "#FFFFFF");
                 next(args);
