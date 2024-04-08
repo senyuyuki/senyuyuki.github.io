@@ -39,15 +39,15 @@
         window.windowIsOpen = true;
         window.tarot.tarotWindow = document.createElement("div");
         window.tarot.tarotWindow.style.position="fixed";
-        window.tarot.tarotWindow.style.width="400px";
-        window.tarot.tarotWindow.style.height="300px";
+        window.tarot.tarotWindow.style.width="500px";
+        window.tarot.tarotWindow.style.height="500px";
         window.tarot.tarotWindow.style.backgroundColor="#fff";
         window.tarot.tarotWindow.style.border="1px solid #ccc";
         window.tarot.tarotWindow.style.top="50%";
         window.tarot.tarotWindow.style.left="50%";
-        window.tarot.tarotWindow.style.transform="translate(50%,50%)";
+        //window.tarot.tarotWindow.style.transform="translate(-50%,50%)";
         window.tarot.tarotWindow.style.overflow="hidden";
-        window.tarot.tarotWindow.style.zIndex="9999";
+        window.tarot.tarotWindow.style.zIndex="2333";
         document.body.appendChild(window.tarot.tarotWindow);
     }
     function closeWindow(){
