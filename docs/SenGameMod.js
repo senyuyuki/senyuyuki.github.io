@@ -17,6 +17,7 @@
         );
         sengame.hookFunction("ChatRoomClick",0,(args, next) => {
                 if (MouseIn(965, 500, 40, 40)) {
+                    console.log("按键点击已经检测")
                     if(!window.windowIsOpen)
                     {
                         window.windowIsOpen = true;
@@ -31,6 +32,7 @@
             }
         );
         function createWindow(){
+            console.log("创建窗口函数已经调用")
             window.tarot.tarotWindow = document.createElement("div");
             window.tarot.tarotWindow.style.position="fixed";
             window.tarot.tarotWindow.style.width="300px";
