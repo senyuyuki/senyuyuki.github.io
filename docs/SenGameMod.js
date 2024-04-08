@@ -121,8 +121,7 @@
                 insertTextIntoWindow(`今日已经抽取过塔罗牌：\n${tarotMes}`);
             }
         })
-        window.tarot.tarotWindow.appendChild(button);
-        document.body.appendChild(window.tarot.tarotWindow);
+        window.tarot.tarotWindow.appendChild(tarotButton);
     }
     function createGame(){
         window.gameWindowIsOpen = true;
@@ -135,12 +134,15 @@
             lpdIsWaiting = 1;
             ServerSend("ChatRoomChat", {Content:`开启了一个捆缚轮盘赌游戏房间，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
         })
+        window.game.gameWindow.appendChild(lpdButton);
     }
     function closeWindow(){
         if (window.tarotWindowIsOpen == true){
+            window.tarotWindowIsOpen = false;
             document.body.removeChild(window.tarot.tarotWindow);
         }
         else if (window.gameWindowIsOpen == true){
+            window.gameWindowIsOpen = false;
             document.body.removeChild(window.game.gameWindow);
         }
     }
