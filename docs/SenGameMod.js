@@ -9,6 +9,7 @@
             repository: 'https://github.com/senyuyuki',
         });
         window.tarot = {};
+        window.windowIsOpen = false;
         sengame.hookFunction("ChatRoomMenuDraw",0,(args, next) => {
                 DrawButton(965, 500, 40, 40, "T", "#FFFFFF");
                 next(args);
@@ -18,6 +19,7 @@
                 if (MouseIn(965, 500, 40, 40)) {
                     if(!window.windowIsOpen)
                     {
+                        window.windowIsOpen = true;
                         createWindow();
                     }
                     else
