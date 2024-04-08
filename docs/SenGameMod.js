@@ -14,7 +14,7 @@
             }
         );
         sengame.hookFunction("ChatRoomClick",0,(args, next) => {
-                if (NeedShowButton() && MouseIn(965, 500, 40, 40)) {
+                if (MouseIn(965, 500, 40, 40)) {
                     if(!window.windowIsOpen)
                     {
                         createWindow();
