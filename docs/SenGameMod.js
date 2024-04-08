@@ -101,6 +101,7 @@
         button.style.margin = "20px";
         button.addEventListener("click", function() {
             if(!window.textIsExist){
+                console.log("写入文字函数调用")
                 tarotMes = Tarot[RandomTarot()];
                 window.textIsExist = true;
                 insertTextIntoWindow(tarotMes);
@@ -118,6 +119,7 @@
         document.body.removeChild(window.tarot.tarotWindow);
     }
     function insertTextIntoWindow(text) {
+        console.log("写入中")
         if (window.tarot && window.tarot.tarotWindow) {
             var tarotShow = document.createElement("p");
             tarotShow.style.color = "black";
