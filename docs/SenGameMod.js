@@ -70,11 +70,35 @@
         sengame.hookFunction("ChatRoomClick",0,(args, next) => {
             closeWindow();
             if (MouseIn(965, 500, 40, 40)) {
-                createWindow("fixed","500px","300px","#c8c4aa","2px dashed #264499","50%","50%","translate(0%,0%)");
+                window.tarot.tarotWindow = document.createElement("div");
+                window.tarot.tarotWindow.style.position="fixed";
+                window.tarot.tarotWindow.style.width="500px";
+                window.tarot.tarotWindow.style.height="300px";
+                window.tarot.tarotWindow.style.backgroundColor="#c8c4aa";
+                window.tarot.tarotWindow.style.border="2px dashed #264499";
+                window.tarot.tarotWindow.style.top="50%";
+                window.tarot.tarotWindow.style.left="50%";
+                window.tarot.tarotWindow.style.transform="translate(0%,0%)";
+                window.tarot.tarotWindow.style.resize="both";
+                window.tarot.tarotWindow.style.overflow="hidden";
+                window.tarot.tarotWindow.style.zIndex="2333";
+                document.body.appendChild(window.tarot.tarotWindow);
                 createTarot();
             }
             else if (MouseIn(965, 460, 40, 40)) {
-                createWindow("fixed","100px","400px","#c8c4aa","2px dashed #264499","50%","50%","translate(0%,0%)");
+                window.tarot.tarotWindow = document.createElement("div");
+                window.tarot.tarotWindow.style.position="fixed";
+                window.tarot.tarotWindow.style.width="100px";
+                window.tarot.tarotWindow.style.height="400px";
+                window.tarot.tarotWindow.style.backgroundColor="#c8c4aa";
+                window.tarot.tarotWindow.style.border="2px dashed #264499";
+                window.tarot.tarotWindow.style.top="50%";
+                window.tarot.tarotWindow.style.left="50%";
+                window.tarot.tarotWindow.style.transform="translate(0%,0%)";
+                window.tarot.tarotWindow.style.resize="both";
+                window.tarot.tarotWindow.style.overflow="hidden";
+                window.tarot.tarotWindow.style.zIndex="2333";
+                document.body.appendChild(window.tarot.tarotWindow);
                 createGame();
             }
             next(args);
@@ -85,21 +109,6 @@
             }
             next(args);
         })
-    function createWindow(pos, wid, hei, bacCol, bor, top, lef, trans){
-        window.tarot.tarotWindow = document.createElement("div");
-        window.tarot.tarotWindow.style.position=pos;
-        window.tarot.tarotWindow.style.width=wid;
-        window.tarot.tarotWindow.style.height=hei;
-        window.tarot.tarotWindow.style.backgroundColor=bacCol;
-        window.tarot.tarotWindow.style.border=bor;
-        window.tarot.tarotWindow.style.top=top;
-        window.tarot.tarotWindow.style.left=lef;
-        window.tarot.tarotWindow.style.transform=trans;
-        window.tarot.tarotWindow.style.resize="both";
-        window.tarot.tarotWindow.style.overflow="hidden";
-        window.tarot.tarotWindow.style.zIndex="2333";
-        document.body.appendChild(window.tarot.tarotWindow);
-    }
     function createTarot(){
         window.tarotWindowIsOpen = true;
         var tarotButton = document.createElement("button");
