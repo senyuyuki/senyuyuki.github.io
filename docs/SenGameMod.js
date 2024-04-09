@@ -123,6 +123,7 @@
                 else {
                     closeWindow();
                 }
+                return;
             }
             else if (MouseIn(965, 460, 40, 40)) {
                 if(!window.gameWindowIsOpen) {
@@ -144,6 +145,7 @@
                 else {
                     closeWindow();
                 }
+                return;
             }
             next(args);
         })
