@@ -103,9 +103,9 @@
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
-                    playerTurn = 1;
                     if(fireBullet()){
                         playerOneHeal -= 1;
+                        playerTurn = 1;
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
                         if(playerOneHeal == 0){
                             shutDownGame(Player.MemberNumber);
@@ -125,9 +125,9 @@
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
-                    playerTurn = 2;
                     if(fireBullet()){
                         playerOneHeal -= 1;
+                        playerTurn = 2;
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
                         if(playerOneHeal == 0){
                             shutDownGame(Player.MemberNumber);
