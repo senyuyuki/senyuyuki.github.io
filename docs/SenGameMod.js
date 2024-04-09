@@ -13,7 +13,12 @@
         window.tarotWindowIsOpen = false;
         window.gameWindowIsOpen = false;
         window.textIsExist = false;
+        var playerOneHeal = 4;
+        var playerTwoHeal = 4;
+        var magazine = [];
+        var secondPlayer = 0;
         var lpdIsWaiting = 0;
+        var lpdIsStart = 0;
         var tarotMes = "";
         var Tarot = [
             "愚者正位，代表自发行为的塔罗牌，一段跳脱某种状态的日子，或尽情享受眼前日子的一段时光。好冒险，有梦想，不拘泥于传统的观念，自由奔放，居无定所，一切从基础出发。当你周遭的人都对某事提防戒慎，你却打算去冒这个险时，愚人牌可能就会出现。愚人暗示通往成功之路是经由自发的行动，而长期的计划则是将来的事。",
@@ -61,12 +66,42 @@
             "世界正位，意指重大的成功及快乐。就变通的角度而言，它暗示你就站在生命希望你站的地方，而你也能感受到生命及你周遭的人的支持。它描述着一种快乐，它不是来自拥有或耕耘，而是来自存在。",
             "世界逆位，这是一个思绪有些烦乱的时期，但现实本质上却并不糟糕，因此只要重整思路就可以顺利前进，比现在看来更大的成功也是可能实现的。另外世界逆位也有可能是巨大的成功已经过去的意思，这种情况下，你也许会有心理落差，也许只是想好好休息一阵，一切就得看你的感受了。"
         ];
+        sengame.hookFunction("ChatRoomMessage",0,(args,next) => {
+            let datas = args[0]
+            console.log(datas);
+            if(datas.content == `与${Player.MemberNumber}轮盘赌` && datas.Sender != Player.MemberNumber && lpdIsWaiting == 1){
+                lpdIsWaiting = 0;
+                secondPlayer = datas.Sender;
+                ServerSend("ChatRoomChat",{Content:`${secondPlayer}加入了${Player.MemberNumber}的轮盘赌`, Type:"Emote"});
+                startGame(Player.MemberNumber, secondPlayer);
+            }
+            else if(datas.content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
+                if(fireBullet()){
+                    playerTwoHeal -= 1;
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
+                }
+                else{
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
+                }
+                lpdOneTurn(secondPlayer);
+            }
+            else if(datas.content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
+                if(fireBullet()){
+                    playerOneHeal -= 1;
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
+                }
+                else{
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
+                }
+                lpdOneTurn(Player.MemberNumber);
+            }
+            next(args);
+        })
         sengame.hookFunction("ChatRoomMenuDraw",0,(args, next) => {
                 DrawButton(965, 500, 40, 40, "🎴", "#FFFFFF");
                 DrawButton(965, 460, 40, 40, "🎮", "#FFFFFF");
                 next(args);
-            }
-        );
+        });
         sengame.hookFunction("ChatRoomClick",0,(args, next) => {
             if (MouseIn(965, 500, 40, 40)) {
                 if(!window.tarotWindowIsOpen) {
@@ -131,7 +166,7 @@
                 window.tarot.tarotWindow.removeChild(child);
             }
             if(!window.textIsExist){
-                tarotMes = Tarot[RandomTarot()];
+                tarotMes = Tarot[randomTarot()];
                 window.textIsExist = true;
                 insertTextIntoWindow(tarotMes);
             }
@@ -150,7 +185,7 @@
         lpdButton.style.height = "20px";
         lpdButton.addEventListener("click", function(){
             lpdIsWaiting = 1;
-            ServerSend("ChatRoomChat", {Content:`开启了一个捆缚轮盘赌游戏房间，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
+            ServerSend("ChatRoomChat", {Content:`开启了一局捆缚轮盘赌游戏，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
         })
         window.game.gameWindow.appendChild(lpdButton);
     }
@@ -176,7 +211,28 @@
         else {
         }
     }
-    function RandomTarot() {
+    function randomTarot() {
         return Math.floor(Math.random() * 44);
+    }
+    function startGame(player_1, player_2, bulletNum, noneNum) {
+        lpdIsWaiting = 0;
+        lpdIsStart = 1;
+        for (let i = 0; i < bulletNum; i++){
+            magazine.push(1);
+        }
+        for (let j = 0; i < noneNum; j++){
+            magazine.push(0);
+        }
+        magazine.sort(() => Math.random() - 0.5);
+        ServerSend("ChatRoomChat",{Type:"Emote", Content:`本轮装弹为${bulletNum}实弹${noneNum}空弹`});
+        if (Math.floor(Math.random()) < 0.5) {
+            return lpdOneTurn(player_1);
+        }
+        else {
+            return lpdOneTurn(player_2);
+        }
+    }
+    function lpdOneTurn(playerId){
+        ServerSend("ChatRoomChat",{Content:`${playerId}的回合`, Type:"Emote"});
     }
 })();
