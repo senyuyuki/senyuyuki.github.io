@@ -73,7 +73,7 @@
                 lpdIsWaiting = 0;
                 secondPlayer = datas.Sender;
                 ServerSend("ChatRoomChat",{Content:`${secondPlayer}加入了${Player.MemberNumber}的轮盘赌`, Type:"Emote"});
-                startGame(Player.MemberNumber, secondPlayer, 6, 5);
+                startGame(Player.MemberNumber, secondPlayer, 8, 7);
             }
             else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
                 if(fireBullet()){
