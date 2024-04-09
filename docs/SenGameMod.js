@@ -62,7 +62,7 @@
             "世界逆位，这是一个思绪有些烦乱的时期，但现实本质上却并不糟糕，因此只要重整思路就可以顺利前进，比现在看来更大的成功也是可能实现的。另外世界逆位也有可能是巨大的成功已经过去的意思，这种情况下，你也许会有心理落差，也许只是想好好休息一阵，一切就得看你的感受了。"
         ];
         sengame.hookFunction("ChatRoomMessage",0,(args,next) => {
-            console.log(args);
+            console.log(args[0]);
             next(args);
         })
         sengame.hookFunction("ChatRoomMenuDraw",0,(args, next) => {
