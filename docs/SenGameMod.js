@@ -15,6 +15,8 @@
         window.textIsExist = false;
         var playerOneHeal = 4;
         var playerTwoHeal = 4;
+        var playerOneId = 0;
+        var playerTwoId = 0;
         var magazine = [];
         var secondPlayer = 0;
         var lpdIsWaiting = 0;
@@ -87,10 +89,12 @@
             }
             else if(datas.content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
                 if(fireBullet()){
+                    console.log("检测到开枪");
                     playerOneHeal -= 1;
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
                 }
                 else{
+                    console.log("检测到开枪");
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
                 }
                 lpdOneTurn(Player.MemberNumber);
