@@ -69,7 +69,7 @@
         sengame.hookFunction("ChatRoomMessage",0,(args,next) => {
             let datas = args[0]
             console.log(datas);
-            if(datas.content == `与${Player.MemberNumber}轮盘赌` && datas.Sender != Player.MemberNumber && lpdIsWaiting == 1){
+            if(datas.Content == `与${Player.MemberNumber}轮盘赌` && datas.Sender != Player.MemberNumber && lpdIsWaiting == 1){
                 lpdIsWaiting = 0;
                 secondPlayer = datas.Sender;
                 ServerSend("ChatRoomChat",{Content:`${secondPlayer}加入了${Player.MemberNumber}的轮盘赌`, Type:"Emote"});
