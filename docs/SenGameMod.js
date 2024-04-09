@@ -61,12 +61,15 @@
             "世界正位，意指重大的成功及快乐。就变通的角度而言，它暗示你就站在生命希望你站的地方，而你也能感受到生命及你周遭的人的支持。它描述着一种快乐，它不是来自拥有或耕耘，而是来自存在。",
             "世界逆位，这是一个思绪有些烦乱的时期，但现实本质上却并不糟糕，因此只要重整思路就可以顺利前进，比现在看来更大的成功也是可能实现的。另外世界逆位也有可能是巨大的成功已经过去的意思，这种情况下，你也许会有心理落差，也许只是想好好休息一阵，一切就得看你的感受了。"
         ];
+        sengame.hookFunction("ChatRoomMessage",0,(args,next) => {
+            console.log(args);
+            next(args);
+        })
         sengame.hookFunction("ChatRoomMenuDraw",0,(args, next) => {
                 DrawButton(965, 500, 40, 40, "🎴", "#FFFFFF");
                 DrawButton(965, 460, 40, 40, "🎮", "#FFFFFF");
                 next(args);
-            }
-        );
+        });
         sengame.hookFunction("ChatRoomClick",0,(args, next) => {
             if (MouseIn(965, 500, 40, 40)) {
                 if(!window.tarotWindowIsOpen) {
@@ -150,7 +153,7 @@
         lpdButton.style.height = "20px";
         lpdButton.addEventListener("click", function(){
             lpdIsWaiting = 1;
-            ServerSend("ChatRoomChat", {Content:`开启了一个捆缚轮盘赌游戏房间，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
+            ServerSend("ChatRoomChat", {Content:`开启了一局捆缚轮盘赌游戏，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
         })
         window.game.gameWindow.appendChild(lpdButton);
     }
