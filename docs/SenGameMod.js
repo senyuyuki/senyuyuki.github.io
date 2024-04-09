@@ -73,7 +73,7 @@
                 lpdIsWaiting = 0;
                 secondPlayer = datas.Sender;
                 ServerSend("ChatRoomChat",{Content:`${secondPlayer}加入了${Player.MemberNumber}的轮盘赌`, Type:"Emote"});
-                startGame(Player.MemberNumber, secondPlayer);
+                startGame(Player.MemberNumber, secondPlayer, 4, 5);
             }
             else if(datas.content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
                 if(fireBullet()){
@@ -220,7 +220,7 @@
         for (let i = 0; i < bulletNum; i++){
             magazine.push(1);
         }
-        for (let j = 0; i < noneNum; j++){
+        for (let j = 0; j < noneNum; j++){
             magazine.push(0);
         }
         magazine.sort(() => Math.random() - 0.5);
