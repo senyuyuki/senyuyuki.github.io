@@ -13,6 +13,7 @@
         window.tarotWindowIsOpen = false;
         window.gameWindowIsOpen = false;
         window.textIsExist = false;
+        var secondPlayer = 0;
         var lpdIsWaiting = 0;
         var tarotMes = "";
         var Tarot = [
@@ -62,7 +63,14 @@
             "世界逆位，这是一个思绪有些烦乱的时期，但现实本质上却并不糟糕，因此只要重整思路就可以顺利前进，比现在看来更大的成功也是可能实现的。另外世界逆位也有可能是巨大的成功已经过去的意思，这种情况下，你也许会有心理落差，也许只是想好好休息一阵，一切就得看你的感受了。"
         ];
         sengame.hookFunction("ChatRoomMessage",0,(args,next) => {
-            console.log(args[0]);
+            let datas = args[0]
+            console.log(datas);
+            if(datas.content == `与${Player.MemberNumber}轮盘赌` && datas.Sender != Player.MemberNumber && lpdIsWaiting == 1){
+                lpdIsWaiting = 0;
+                secondPlayer = datas.Sender;
+                ServerSend("ChatRoomChat",{Content:`${secondPlayer}加入了${Player.MemberNumber}的轮盘赌`, Type:"Emote"});
+                startGame(Player.MemberNumber, secondPlayer);
+            }
             next(args);
         })
         sengame.hookFunction("ChatRoomMenuDraw",0,(args, next) => {
@@ -134,7 +142,7 @@
                 window.tarot.tarotWindow.removeChild(child);
             }
             if(!window.textIsExist){
-                tarotMes = Tarot[RandomTarot()];
+                tarotMes = Tarot[randomTarot()];
                 window.textIsExist = true;
                 insertTextIntoWindow(tarotMes);
             }
@@ -179,7 +187,18 @@
         else {
         }
     }
-    function RandomTarot() {
+    function randomTarot() {
         return Math.floor(Math.random() * 44);
+    }
+    function startGame(player_1, player_2) {
+        if (Math.floor(Math.random()) < 0.5) {
+            return lpdOneTurn(player_1);
+        }
+        else {
+            return lpdOneTurn(player_2);
+        }
+    }
+    function lpdOneTurn(playerId){
+        ServerSend("ChatRoomChat",{Content:`${playerId}的回合`, Type:"Emote"});
     }
 })();
