@@ -251,7 +251,7 @@
         lpdButton.style.width = "100px";
         lpdButton.style.height = "20px";
         lpdButton.addEventListener("click", function(){
-            if(lpdIsWaiting = 0 && lpdIsStart == 0){
+            if(lpdIsWaiting == 0 && lpdIsStart == 0){
                 lpdIsWaiting = 1;
                 ServerSend("ChatRoomChat", {Content:`开启了一局捆缚轮盘赌游戏，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
             }
