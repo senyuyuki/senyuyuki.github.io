@@ -15,6 +15,7 @@
         window.textIsExist = false;
         var playerOneHeal = 4;
         var playerTwoHeal = 4;
+        var playerTurn = 0;
         var magazine = [];
         var secondPlayer = 0;
         var lpdIsWaiting = 0;
@@ -73,70 +74,90 @@
                 lpdIsWaiting = 0;
                 secondPlayer = datas.Sender;
                 ServerSend("ChatRoomChat",{Content:`${secondPlayer}加入了${Player.MemberNumber}的轮盘赌`, Type:"Emote"});
-                startGame(Player.MemberNumber, secondPlayer, 8, 7);
+                startGame(Player.MemberNumber, secondPlayer, 6, 5);
             }
             else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
-                if(fireBullet()){
-                    playerTwoHeal -= 1;
-                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
-                    if(playerTwoHeal == 0){
-                        shutDownGame(secondPlayer);
-                    }
-                    else{
-                        lpdOneTurn(secondPlayer);
-                    }
+                if(playerTurn != 1){
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
-                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
-                    lpdOneTurn(secondPlayer);
+                    if(fireBullet()){
+                        playerTwoHeal -= 1;
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
+                        if(playerTwoHeal == 0){
+                            shutDownGame(secondPlayer);
+                        }
+                        else{
+                            lpdOneTurn(secondPlayer);
+                        }
+                    }
+                    else{
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
+                        lpdOneTurn(secondPlayer);
+                    }
                 }
             }
             else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
-                if(fireBullet()){
-                    playerOneHeal -= 1;
-                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
-                    if(playerOneHeal == 0){
-                        shutDownGame(Player.MemberNumber);
-                    }
-                    else{
-                        lpdOneTurn(Player.MemberNumber);
-                    }
+                if(playerTurn != 2){
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
-                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
-                    lpdOneTurn(Player.MemberNumber);
+                    if(fireBullet()){
+                        playerOneHeal -= 1;
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
+                        if(playerOneHeal == 0){
+                            shutDownGame(Player.MemberNumber);
+                        }
+                        else{
+                            lpdOneTurn(Player.MemberNumber);
+                        }
+                    }
+                    else{
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
+                        lpdOneTurn(Player.MemberNumber);
+                    }
                 }
             }
             else if(datas.Content == `向自己开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
-                if(fireBullet()){
-                    playerOneHeal -= 1;
-                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
-                    if(playerOneHeal == 0){
-                        shutDownGame(Player.MemberNumber);
-                    }
-                    else{
-                        lpdOneTurn(secondPlayer);
-                    }
+                if(playerTurn != 1){
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
-                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
-                    lpdOneTurn(Player.MemberNumber);
-                }
-            }
-            else if(datas.Content == `向自己开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
-                if(fireBullet()){
-                    playerTwoHeal -= 1;
-                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
-                    if(playerTwoHeal == 0){
-                        shutDownGame(secondPlayer);
+                    if(fireBullet()){
+                        playerOneHeal -= 1;
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
+                        if(playerOneHeal == 0){
+                            shutDownGame(Player.MemberNumber);
+                        }
+                        else{
+                            lpdOneTurn(secondPlayer);
+                        }
                     }
                     else{
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
                         lpdOneTurn(Player.MemberNumber);
                     }
                 }
+            }
+            else if(datas.Content == `向自己开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
+                if(playerTurn != 1){
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
+                }
                 else{
-                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
-                    lpdOneTurn(secondPlayer);
+                    if(fireBullet()){
+                        playerTwoHeal -= 1;
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
+                        if(playerTwoHeal == 0){
+                            shutDownGame(secondPlayer);
+                        }
+                        else{
+                            lpdOneTurn(Player.MemberNumber);
+                        }
+                    }
+                    else{
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
+                        lpdOneTurn(secondPlayer);
+                    }
                 }
             }
             next(args);
@@ -230,8 +251,10 @@
         lpdButton.style.width = "100px";
         lpdButton.style.height = "20px";
         lpdButton.addEventListener("click", function(){
-            lpdIsWaiting = 1;
-            ServerSend("ChatRoomChat", {Content:`开启了一局捆缚轮盘赌游戏，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
+            if(lpdIsWaiting = 0 && lpdIsStart == 0){
+                lpdIsWaiting = 1;
+                ServerSend("ChatRoomChat", {Content:`开启了一局捆缚轮盘赌游戏，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
+            }
         })
         window.game.gameWindow.appendChild(lpdButton);
     }
@@ -275,9 +298,11 @@
         ServerSend("ChatRoomChat",{Type:"Emote", Content:`向自己开枪若为空弹则继续自己回合`});
         ServerSend("ChatRoomChat",{Type:"Emote", Content:`本轮装弹为${bulletNum}实弹${noneNum}空弹`});
         if (Math.floor(Math.random()*2) == 1) {
+            playerTurn = 1;
             return lpdOneTurn(player_1);
         }
         else {
+            playerTurn = 2;
             return lpdOneTurn(player_2);
         }
     }
