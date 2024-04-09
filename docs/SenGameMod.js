@@ -13,8 +13,12 @@
         window.tarotWindowIsOpen = false;
         window.gameWindowIsOpen = false;
         window.textIsExist = false;
+        var playerOneHeal = 4;
+        var playerTwoHeal = 4;
+        var magazine = [];
         var secondPlayer = 0;
         var lpdIsWaiting = 0;
+        var lpdIsStart = 0;
         var tarotMes = "";
         var Tarot = [
             "愚者正位，代表自发行为的塔罗牌，一段跳脱某种状态的日子，或尽情享受眼前日子的一段时光。好冒险，有梦想，不拘泥于传统的观念，自由奔放，居无定所，一切从基础出发。当你周遭的人都对某事提防戒慎，你却打算去冒这个险时，愚人牌可能就会出现。愚人暗示通往成功之路是经由自发的行动，而长期的计划则是将来的事。",
@@ -70,6 +74,26 @@
                 secondPlayer = datas.Sender;
                 ServerSend("ChatRoomChat",{Content:`${secondPlayer}加入了${Player.MemberNumber}的轮盘赌`, Type:"Emote"});
                 startGame(Player.MemberNumber, secondPlayer);
+            }
+            else if(datas.content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
+                if(fireBullet()){
+                    playerTwoHeal -= 1;
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
+                }
+                else{
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
+                }
+                lpdOneTurn(secondPlayer);
+            }
+            else if(datas.content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
+                if(fireBullet()){
+                    playerOneHeal -= 1;
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
+                }
+                else{
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
+                }
+                lpdOneTurn(Player.MemberNumber);
             }
             next(args);
         })
@@ -190,7 +214,17 @@
     function randomTarot() {
         return Math.floor(Math.random() * 44);
     }
-    function startGame(player_1, player_2) {
+    function startGame(player_1, player_2, bulletNum, noneNum) {
+        lpdIsWaiting = 0;
+        lpdIsStart = 1;
+        for (let i = 0; i < bulletNum; i++){
+            magazine.push(1);
+        }
+        for (let j = 0; i < noneNum; j++){
+            magazine.push(0);
+        }
+        magazine.sort(() => Math.random() - 0.5);
+        ServerSend("ChatRoomChat",{Type:"Emote", Content:`本轮装弹为${bulletNum}实弹${noneNum}空弹`});
         if (Math.floor(Math.random()) < 0.5) {
             return lpdOneTurn(player_1);
         }
