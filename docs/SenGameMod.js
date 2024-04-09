@@ -81,6 +81,7 @@
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
+                    playerTurn = 2;
                     if(fireBullet()){
                         playerTwoHeal -= 1;
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
@@ -102,6 +103,7 @@
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
+                    playerTurn = 1;
                     if(fireBullet()){
                         playerOneHeal -= 1;
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
@@ -123,6 +125,7 @@
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
+                    playerTurn = 2;
                     if(fireBullet()){
                         playerOneHeal -= 1;
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
@@ -144,6 +147,7 @@
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
+                    playerTurn = 1;
                     if(fireBullet()){
                         playerTwoHeal -= 1;
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
