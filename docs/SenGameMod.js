@@ -77,7 +77,7 @@
                 ServerSend("ChatRoomChat",{Content:`${secondPlayer}加入了${Player.MemberNumber}的轮盘赌`, Type:"Emote"});
                 startGame(Player.MemberNumber, secondPlayer, 4, 5);
             }
-            else if(datas.content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
+            else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
                 if(fireBullet()){
                     playerTwoHeal -= 1;
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
@@ -87,17 +87,37 @@
                 }
                 lpdOneTurn(secondPlayer);
             }
-            else if(datas.content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
+            else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
                 if(fireBullet()){
-                    console.log("检测到开枪");
                     playerOneHeal -= 1;
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
                 }
                 else{
-                    console.log("检测到开枪");
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
                 }
                 lpdOneTurn(Player.MemberNumber);
+            }
+            else if(datas.Content == `向自己开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
+                if(fireBullet()){
+                    playerOneHeal -= 1;
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
+                    lpdOneTurn(secondPlayer);
+                }
+                else{
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
+                    lpdOneTurn(Player.MemberNumber);
+                }
+            }
+            else if(datas.Content == `向自己开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
+                if(fireBullet()){
+                    playerTwoHeal -= 1;
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
+                    lpdOneTurn(Player.MemberNumber);
+                }
+                else{
+                    ServerSend("ChatRoomChat",{Type:"Emote", Content:`空弹`});
+                    lpdOneTurn(secondPlayer);
+                }
             }
             next(args);
         })
@@ -231,7 +251,7 @@
         }
         magazine.sort(() => Math.random() - 0.5);
         ServerSend("ChatRoomChat",{Type:"Emote", Content:`本轮装弹为${bulletNum}实弹${noneNum}空弹`});
-        if (Math.floor(Math.random()) < 0.5) {
+        if (Math.floor(Math.random()*2) == 1) {
             return lpdOneTurn(player_1);
         }
         else {
@@ -240,5 +260,8 @@
     }
     function lpdOneTurn(playerId){
         ServerSend("ChatRoomChat",{Content:`${playerId}的回合`, Type:"Emote"});
+    }
+    function fireBullet(){
+        return magazine.pop();
     }
 })();
