@@ -153,7 +153,7 @@
                 }
             }
             else if(datas.Content == `向自己开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
-                if(playerTurn != 1){
+                if(playerTurn != 2){
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
