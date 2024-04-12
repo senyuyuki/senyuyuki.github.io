@@ -18,7 +18,13 @@
         var playerTurn = 0;
         var magazine = [];
         var secondPlayer = 0;
+        var playerOneHeal = 4;
+        var playerTwoHeal = 4;
+        var playerTurn = 0;
+        var magazine = [];
+        var secondPlayer = 0;
         var lpdIsWaiting = 0;
+        var lpdIsStart = 0;
         var lpdIsStart = 0;
         var tarotMes = "";
         var Tarot = [
