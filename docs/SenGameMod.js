@@ -113,9 +113,9 @@
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
+                    playerTurn = 1;
                     if(fireBullet()){
                         playerOneHeal -= 1;
-                        playerTurn = 1;
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
                         if(playerOneHeal == 0){
                             gameFinish(Player.MemberNumber);
@@ -157,9 +157,9 @@
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`还不是你的回合`});
                 }
                 else{
-                    playerTurn = 1;
                     if(fireBullet()){
                         playerTwoHeal -= 1;
+                        playerTurn = 1;
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`实弹`});
                         if(playerTwoHeal == 0){
                             gameFinish(secondPlayer);
@@ -300,6 +300,7 @@
     function startGame(player_1, player_2, bulletNum, noneNum) {
         lpdIsWaiting = 0;
         lpdIsStart = 1;
+        closeWindow();
         for (let i = 0; i < bulletNum; i++){
             magazine.push(1);
         }
