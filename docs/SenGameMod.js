@@ -84,7 +84,7 @@
                 lpdIsWaiting = 0;
                 secondPlayer = datas.Sender;
                 ServerSend("ChatRoomChat",{Content:`${secondPlayer}加入了${Player.MemberNumber}的轮盘赌`, Type:"Emote"});
-                startGame(Player.MemberNumber, secondPlayer, 6, 5);
+                startGame(Player.MemberNumber, secondPlayer, randomNum(4,1), randomNum(4,1));
             }
             else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
                 if(playerTurn != 1){
@@ -247,7 +247,7 @@
                 window.tarot.tarotWindow.removeChild(child);
             }
             if(!window.textIsExist){
-                tarotMes = Tarot[randomTarot()];
+                tarotMes = Tarot[randomNum(44,0)];
                 window.textIsExist = true;
                 insertTextIntoWindow(tarotMes);
             }
@@ -260,14 +260,14 @@
     function createGame(){
         window.gameWindowIsOpen = true;
         var lpdButton = document.createElement("button");
-        lpdButton.textContent = "捆缚轮盘赌";
+        lpdButton.textContent = "轮盘赌";
         lpdButton.style.margin = "25px";
         lpdButton.style.width = "100px";
         lpdButton.style.height = "20px";
         lpdButton.addEventListener("click", function(){
             if(lpdIsWaiting == 0 && lpdIsStart == 0){
                 lpdIsWaiting = 1;
-                ServerSend("ChatRoomChat", {Content:`开启了一局捆缚轮盘赌游戏，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
+                ServerSend("ChatRoomChat", {Content:`开启了一局轮盘赌游戏，可发送“与${Player.MemberNumber}轮盘赌”参与游戏`, Type:"Emote"});
             }
         })
         window.game.gameWindow.appendChild(lpdButton);
@@ -294,8 +294,8 @@
         else {
         }
     }
-    function randomTarot() {
-        return Math.floor(Math.random() * 44);
+    function randomNum(maxNum, minNum) {
+        return Math.floor(Math.random() * (maxNum-minNum) + minNum);
     }
     function startGame(player_1, player_2, bulletNum, noneNum) {
         lpdIsWaiting = 0;
@@ -322,7 +322,21 @@
         }
     }
     function lpdOneTurn(playerId){
+        if(magazine.length == 0){
+            nextRound(randomNum(4,1), randomNum(4,1));
+        }
         ServerSend("ChatRoomChat",{Content:`${playerId}的回合`, Type:"Emote"});
+    }
+    function nextRound(bulletNum, noneNum){
+        for (let i = 0; i < bulletNum; i++){
+            magazine.push(1);
+        }
+        for (let j = 0; j < noneNum; j++){
+            magazine.push(0);
+        }
+        magazine.sort(() => Math.random() - 0.5);
+        ServerSend("ChatRoomChat",{Type:"Emote", Content:`子弹已打空，进入下一轮次`});
+        ServerSend("ChatRoomChat",{Type:"Emote", Content:`本轮装弹为${bulletNum}实弹${noneNum}空弹`});
     }
     function fireBullet(){
         return magazine.pop();
