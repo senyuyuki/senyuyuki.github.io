@@ -81,6 +81,7 @@
                 lpdIsWaiting = 0;
                 firstPlayer = Player;
                 secondPlayer = ChatRoomCharacter.find(Element => Element.MemberNumber === datas.Sender);
+                console.log(secondPlayer);
                 ServerSend("ChatRoomChat",{Content:`*${secondPlayer.Nickname}加入了${firstPlayer.Nickname}的轮盘赌`, Type:"Emote"});
                 startGame(firstPlayer, secondPlayer, randomNum(4,1), randomNum(4,1));
             }
@@ -323,6 +324,7 @@
         if(magazine.length == 0){
             nextRound(randomNum(4,1), randomNum(4,1));
         }
+        console.log(playerWho);
         ServerSend("ChatRoomChat",{Content:`*${playerWho.Nickname}的回合`, Type:"Emote"});
     }
     function nextRound(bulletNum, noneNum){
