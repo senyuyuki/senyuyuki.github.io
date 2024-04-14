@@ -333,6 +333,9 @@
         }
     }
     function lpdOneTurn(playerWho){
+        if(lpdIsStart == 0){
+            return;
+        }
         if(magazine.length == 0){
             nextRound(randomNum(4,1), randomNum(4,1));
         }
@@ -376,6 +379,7 @@
             failName = failPlayer.Name;
         }
         ServerSend("ChatRoomChat",{Type:"Emote", Content:`*游戏结束${failName}输掉了轮盘赌`});
+
     }
     function shutDownGame(){
         playerOneHeal = 4;
