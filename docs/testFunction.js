@@ -12,5 +12,6 @@
             for(let datas = 0; datas < args.length; datas++){
                 console.log(args[datas]);
             }
+            next(args);
         })
 })();
