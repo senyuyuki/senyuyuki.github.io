@@ -8,7 +8,7 @@
             // Optional - Link to the source code of the mod
             repository: 'https://github.com/senyuyuki',
         });
-        testFunction.hookFunction("ChatRoomMessage",0,(args,next) => {
+        testFunction.hookFunction("InventoryWear",0,(args,next) => {
             for(let datas = 0; datas < args.length; datas++){
                 console.log(args[datas]);
             }
