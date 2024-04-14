@@ -20,8 +20,9 @@
         var magazine = [];
         var firstPlayer;
         var secondPlayer;
+        var firstName;
+        var secondName;
         var playerTurn = 0;
-        var secondPlayer = 0;
         var lpdIsWaiting = 0;
         var lpdIsStart = 0;
         var tarotMes = "";
@@ -81,8 +82,19 @@
                 lpdIsWaiting = 0;
                 firstPlayer = Player;
                 secondPlayer = ChatRoomCharacter.find(Element => Element.MemberNumber === datas.Sender);
-                console.log(secondPlayer);
-                ServerSend("ChatRoomChat",{Content:`*${secondPlayer.Nickname}加入了${firstPlayer.Nickname}的轮盘赌`, Type:"Emote"});
+                if(firstPlayer.Nickname !== ""){
+                    firstName = firstPlayer.Nickname;
+                }
+                else{
+                    firstName = firstPlayer.Name;
+                }
+                if(secondPlayer.Nickname !== ""){
+                    secondName = secondPlayer.Nickname;
+                }
+                else{
+                    secondName = secondPlayer.Name;
+                }
+                ServerSend("ChatRoomChat",{Content:`*${secondName}加入了${firstName}的轮盘赌`, Type:"Emote"});
                 startGame(firstPlayer, secondPlayer, randomNum(4,1), randomNum(4,1));
             }
             else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == firstPlayer.MemberNumber){
@@ -93,7 +105,7 @@
                     playerTurn = 2;
                     if(fireBullet()){
                         healChange(secondPlayer, "Dec");
-                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*实弹`});
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*${firstName}向对方打出实弹`});
                         if(playerTwoHeal == 0){
                             gameFinish(secondPlayer);
                         }
@@ -102,7 +114,7 @@
                         }
                     }
                     else{
-                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*空弹`});
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*${firstName}向对方打出空弹`});
                         lpdOneTurn(secondPlayer);
                     }
                 }
@@ -115,7 +127,7 @@
                     playerTurn = 1;
                     if(fireBullet()){
                         healChange(firstPlayer, "Dec");
-                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*实弹`});
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*${secondName}向对方打出实弹`});
                         if(playerOneHeal == 0){
                             gameFinish(firstPlayer);
                         }
@@ -124,7 +136,7 @@
                         }
                     }
                     else{
-                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*空弹`});
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*${secondName}向对方打出空弹`});
                         lpdOneTurn(firstPlayer);
                     }
                 }
@@ -137,7 +149,7 @@
                     if(fireBullet()){
                         healChange(firstPlayer, "Dec");
                         playerTurn = 2;
-                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*实弹`});
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*${firstName}向自己打出实弹`});
                         if(playerOneHeal == 0){
                             gameFinish(firstPlayer);
                         }
@@ -146,7 +158,7 @@
                         }
                     }
                     else{
-                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*空弹`});
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*${firstName}向自己打出空弹`});
                         lpdOneTurn(firstPlayer);
                     }
                 }
@@ -159,7 +171,7 @@
                     if(fireBullet()){
                         healChange(secondPlayer, "Dec");
                         playerTurn = 1;
-                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*实弹`});
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*${secondName}向自己打出实弹`});
                         if(playerTwoHeal == 0){
                             gameFinish(secondPlayer);
                         }
@@ -168,7 +180,7 @@
                         }
                     }
                     else{
-                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*空弹`});
+                        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*${secondName}向自己打出空弹`});
                         lpdOneTurn(secondPlayer);
                     }
                 }
@@ -324,7 +336,13 @@
         if(magazine.length == 0){
             nextRound(randomNum(4,1), randomNum(4,1));
         }
-        console.log(playerWho);
+        let whoName;
+        if(playerWho.Nickname !== ""){
+            whoName = playerWho.Nickname;
+        }
+        else{
+            whoName = playerWho.Name;
+        }
         ServerSend("ChatRoomChat",{Content:`*${playerWho.Nickname}的回合`, Type:"Emote"});
     }
     function nextRound(bulletNum, noneNum){
@@ -348,7 +366,14 @@
         secondPlayer = 0;
         lpdIsWaiting = 0;
         lpdIsStart = 0;
-        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*游戏结束${failPlayer.Nickname}输掉了轮盘赌`});
+        let failName;
+        if(failPlayer.Nickname !== ""){
+            failName = failPlayer.Nickname;
+        }
+        else{
+            failName = failPlayer.Name;
+        }
+        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*游戏结束${failName}输掉了轮盘赌`});
     }
     function shutDownGame(){
         playerOneHeal = 4;
@@ -371,7 +396,7 @@
                 InventoryWear(playerWho, bondageWear[-(playerTwoHeal)], bondageWhere[-(playerTwoHeal)]);
                 playerTwoHeal -= 1;
                 if(playerTwoHeal == 0){
-                    gameFinish(firstPlayer);
+                    gameFinish(secondPlayer);
                 }
             }
         }
