@@ -343,7 +343,7 @@
         else{
             whoName = playerWho.Name;
         }
-        ServerSend("ChatRoomChat",{Content:`*${playerWho.Nickname}的回合`, Type:"Emote"});
+        ServerSend("ChatRoomChat",{Content:`*${whoName}的回合`, Type:"Emote"});
     }
     function nextRound(bulletNum, noneNum){
         for (let i = 0; i < bulletNum; i++){
