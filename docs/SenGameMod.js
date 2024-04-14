@@ -13,18 +13,16 @@
         window.tarotWindowIsOpen = false;
         window.gameWindowIsOpen = false;
         window.textIsExist = false;
+        var bondageWear = ["FuturisticAnkleCuffs", "FuturisticLegCuffs", "FuturisticCuffs", "FuturisticMask"];
+        var bondageWhere = ["ItemFeet", "ItemLegs", "ItemArms", "ItemHead"];
         var playerOneHeal = 4;
         var playerTwoHeal = 4;
-        var playerTurn = 0;
         var magazine = [];
-        var secondPlayer = 0;
-        var playerOneHeal = 4;
-        var playerTwoHeal = 4;
+        var firstPlayer;
+        var secondPlayer;
         var playerTurn = 0;
-        var magazine = [];
         var secondPlayer = 0;
         var lpdIsWaiting = 0;
-        var lpdIsStart = 0;
         var lpdIsStart = 0;
         var tarotMes = "";
         var Tarot = [
@@ -81,18 +79,19 @@
             let datas = args[0]
             if(datas.Content == `与${Player.MemberNumber}轮盘赌` && datas.Sender != Player.MemberNumber && lpdIsWaiting == 1){
                 lpdIsWaiting = 0;
-                secondPlayer = datas.Sender;
-                ServerSend("ChatRoomChat",{Content:`*${secondPlayer}加入了${Player.MemberNumber}的轮盘赌`, Type:"Emote"});
+                firstPlayer = Player;
+                secondPlayer = ChatRoomCharacter.find(Element => Element.MemberNumber === datas.Sender);
+                ServerSend("ChatRoomChat",{Content:`*${secondPlayer.Nickname}加入了${firstPlayer.Nickname}的轮盘赌`, Type:"Emote"});
                 startGame(Player.MemberNumber, secondPlayer, randomNum(4,1), randomNum(4,1));
             }
-            else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
+            else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == firstPlayer.MemberNumber){
                 if(playerTurn != 1){
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`*还不是你的回合`});
                 }
                 else{
                     playerTurn = 2;
                     if(fireBullet()){
-                        playerTwoHeal -= 1;
+                        healChange(secondPlayer, "Dec");
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`*实弹`});
                         if(playerTwoHeal == 0){
                             gameFinish(secondPlayer);
@@ -107,39 +106,39 @@
                     }
                 }
             }
-            else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
+            else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer.MemberNumber){
                 if(playerTurn != 2){
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`*还不是你的回合`});
                 }
                 else{
                     playerTurn = 1;
                     if(fireBullet()){
-                        playerOneHeal -= 1;
+                        healChange(firstPlayer, "Dec");
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`*实弹`});
                         if(playerOneHeal == 0){
-                            gameFinish(Player.MemberNumber);
+                            gameFinish(firstPlayer);
                         }
                         else{
-                            lpdOneTurn(Player.MemberNumber);
+                            lpdOneTurn(firstPlayer);
                         }
                     }
                     else{
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`*空弹`});
-                        lpdOneTurn(Player.MemberNumber);
+                        lpdOneTurn(firstPlayer);
                     }
                 }
             }
-            else if(datas.Content == `向自己开枪` && lpdIsStart == 1 && datas.Sender == Player.MemberNumber){
+            else if(datas.Content == `向自己开枪` && lpdIsStart == 1 && datas.Sender == firstPlayer.MemberNumber){
                 if(playerTurn != 1){
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`*还不是你的回合`});
                 }
                 else{
                     if(fireBullet()){
-                        playerOneHeal -= 1;
+                        healChange(firstPlayer, "Dec");
                         playerTurn = 2;
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`*实弹`});
                         if(playerOneHeal == 0){
-                            gameFinish(Player.MemberNumber);
+                            gameFinish(firstPlayer);
                         }
                         else{
                             lpdOneTurn(secondPlayer);
@@ -147,24 +146,24 @@
                     }
                     else{
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`*空弹`});
-                        lpdOneTurn(Player.MemberNumber);
+                        lpdOneTurn(firstPlayer);
                     }
                 }
             }
-            else if(datas.Content == `向自己开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer){
+            else if(datas.Content == `向自己开枪` && lpdIsStart == 1 && datas.Sender == secondPlayer.MemberNumber){
                 if(playerTurn != 2){
                     ServerSend("ChatRoomChat",{Type:"Emote", Content:`*还不是你的回合`});
                 }
                 else{
                     if(fireBullet()){
-                        playerTwoHeal -= 1;
+                        healChange(secondPlayer, "Dec");
                         playerTurn = 1;
                         ServerSend("ChatRoomChat",{Type:"Emote", Content:`*实弹`});
                         if(playerTwoHeal == 0){
                             gameFinish(secondPlayer);
                         }
                         else{
-                            lpdOneTurn(Player.MemberNumber);
+                            lpdOneTurn(firstPlayer);
                         }
                     }
                     else{
@@ -320,11 +319,11 @@
             return lpdOneTurn(player_2);
         }
     }
-    function lpdOneTurn(playerId){
+    function lpdOneTurn(playerWho){
         if(magazine.length == 0){
             nextRound(randomNum(4,1), randomNum(4,1));
         }
-        ServerSend("ChatRoomChat",{Content:`*${playerId}的回合`, Type:"Emote"});
+        ServerSend("ChatRoomChat",{Content:`*${playerWho.Nickname}的回合`, Type:"Emote"});
     }
     function nextRound(bulletNum, noneNum){
         for (let i = 0; i < bulletNum; i++){
@@ -340,14 +339,14 @@
     function fireBullet(){
         return magazine.pop();
     }
-    function gameFinish(failPlayerId){
+    function gameFinish(failPlayer){
         playerOneHeal = 4;
         playerTwoHeal = 4;
         magazine = [];
         secondPlayer = 0;
         lpdIsWaiting = 0;
         lpdIsStart = 0;
-        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*游戏结束${failPlayerId}输掉了轮盘赌`});
+        ServerSend("ChatRoomChat",{Type:"Emote", Content:`*游戏结束${failPlayer.Nickname}输掉了轮盘赌`});
     }
     function shutDownGame(){
         playerOneHeal = 4;
@@ -356,5 +355,23 @@
         secondPlayer = 0;
         lpdIsWaiting = 0;
         lpdIsStart = 0;
+    }
+    function healChange(playerWho, incOrDec) {
+        if(incOrDec == "Dec"){
+            if(playerWho.MemberNumber == firstPlayer.MemberNumber){
+                InventoryWear(playerWho, bondageWear[-(playerOneHeal)], bondageWhere[-(playerOneHeal)]);
+                playerOneHeal -= 1;
+                if(playerOneHeal == 0){
+                    gameFinish(firstPlayer);
+                }
+            }
+            if(playerWho.MemberNumber == secondPlayer.MemberNumber){
+                InventoryWear(playerWho, bondageWear[-(playerTwoHeal)], bondageWhere[-(playerTwoHeal)]);
+                playerTwoHeal -= 1;
+                if(playerTwoHeal == 0){
+                    gameFinish(firstPlayer);
+                }
+            }
+        }
     }
 })();
