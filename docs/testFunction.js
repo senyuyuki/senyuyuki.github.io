@@ -8,10 +8,9 @@
             // Optional - Link to the source code of the mod
             repository: 'https://github.com/senyuyuki',
         });
-        testFunction.hookFunction("InventoryWear",0,(args,next) => {
-            for(let datas = 0; datas < args.length; datas++){
-                console.log(args[datas]);
-            }
+        testFunction.hookFunction("ChatRoomMenuDraw",0,(args, next) => {
+            DrawButton(965, 500, 40, 40, "🎴", "#FFFFFF");
+            DrawButton(965, 460, 40, 40, "🎮", "#FFFFFF");
             next(args);
-        })
+        });
 })
