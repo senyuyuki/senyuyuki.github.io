@@ -390,13 +390,15 @@
             if(playerWho.MemberNumber == firstPlayer.MemberNumber){
                 playerOneHeal -= 1;
                 InventoryWear(playerWho, bondageWear[playerOneHeal], bondageWhere[playerOneHeal]);
+                ChatRoomCharacterUpdate(playerWho);
                 if(playerOneHeal == 0){
                     gameFinish(firstPlayer);
                 }
             }
-            if(playerWho.MemberNumber == secondPlayer.MemberNumber){
+            else{
                 playerTwoHeal -= 1;
                 InventoryWear(playerWho, bondageWear[playerTwoHeal], bondageWhere[playerTwoHeal]);
+                ChatRoomCharacterUpdate(playerWho);
                 if(playerTwoHeal == 0){
                     gameFinish(secondPlayer);
                 }
