@@ -82,7 +82,7 @@
                 firstPlayer = Player;
                 secondPlayer = ChatRoomCharacter.find(Element => Element.MemberNumber === datas.Sender);
                 ServerSend("ChatRoomChat",{Content:`*${secondPlayer.Nickname}加入了${firstPlayer.Nickname}的轮盘赌`, Type:"Emote"});
-                startGame(Player.MemberNumber, secondPlayer, randomNum(4,1), randomNum(4,1));
+                startGame(firstPlayer, secondPlayer, randomNum(4,1), randomNum(4,1));
             }
             else if(datas.Content == `向对方开枪` && lpdIsStart == 1 && datas.Sender == firstPlayer.MemberNumber){
                 if(playerTurn != 1){
