@@ -13,8 +13,8 @@
         window.tarotWindowIsOpen = false;
         window.gameWindowIsOpen = false;
         window.textIsExist = false;
-        var bondageWear = ["FuturisticMask", "FuturisticCuffs", "FuturisticLegCuffs", "FuturisticAnkleCuffs"];
-        var bondageWhere = ["ItemHead", "ItemArms", "ItemLegs", "ItemFeet"];
+        var bondageWear = ["DroneMask", "TightJacketCrotch", "HobbleSkirt", "MonoHeel"];
+        var bondageWhere = ["ItemHood", "ItemArms", "ItemLegs", "ItemBoots"];
         var playerOneHeal = 4;
         var playerTwoHeal = 4;
         var magazine = [];
@@ -393,7 +393,7 @@
         if(incOrDec == "Dec"){
             if(playerWho.MemberNumber == firstPlayer.MemberNumber){
                 playerOneHeal -= 1;
-                InventoryWear(playerWho, bondageWear[playerOneHeal], bondageWhere[playerOneHeal]);
+                InventoryWear(playerWho, bondageWear[playerOneHeal], bondageWhere[playerOneHeal], "#333333");
                 ChatRoomCharacterUpdate(playerWho);
                 if(playerOneHeal == 0){
                     gameFinish(firstPlayer);
@@ -401,7 +401,7 @@
             }
             else{
                 playerTwoHeal -= 1;
-                InventoryWear(playerWho, bondageWear[playerTwoHeal], bondageWhere[playerTwoHeal]);
+                InventoryWear(playerWho, bondageWear[playerTwoHeal], bondageWhere[playerTwoHeal], "#333333");
                 ChatRoomCharacterUpdate(playerWho);
                 if(playerTwoHeal == 0){
                     gameFinish(secondPlayer);
