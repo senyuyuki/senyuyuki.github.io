@@ -13,8 +13,8 @@
         window.tarotWindowIsOpen = false;
         window.gameWindowIsOpen = false;
         window.textIsExist = false;
-        var bondageWear = ["FuturisticAnkleCuffs", "FuturisticLegCuffs", "FuturisticCuffs", "FuturisticMask"];
-        var bondageWhere = ["ItemFeet", "ItemLegs", "ItemArms", "ItemHead"];
+        var bondageWear = ["FuturisticMask", "FuturisticCuffs", "FuturisticLegCuffs", "FuturisticAnkleCuffs"];
+        var bondageWhere = ["ItemHead", "ItemArms", "ItemLegs", "ItemFeet"];
         var playerOneHeal = 4;
         var playerTwoHeal = 4;
         var magazine = [];
@@ -346,6 +346,8 @@
         ServerSend("ChatRoomChat",{Content:`*${whoName}的回合`, Type:"Emote"});
     }
     function nextRound(bulletNum, noneNum){
+        firstPlayer = Player;
+        secondPlayer = ChatRoomCharacter.find(Element => Element.MemberNumber === secondPlayer.MemberNumber);
         for (let i = 0; i < bulletNum; i++){
             magazine.push(1);
         }
@@ -386,15 +388,15 @@
     function healChange(playerWho, incOrDec) {
         if(incOrDec == "Dec"){
             if(playerWho.MemberNumber == firstPlayer.MemberNumber){
-                InventoryWear(playerWho, bondageWear[-(playerOneHeal)], bondageWhere[-(playerOneHeal)]);
                 playerOneHeal -= 1;
+                InventoryWear(playerWho, bondageWear[playerOneHeal], bondageWhere[playerOneHeal]);
                 if(playerOneHeal == 0){
                     gameFinish(firstPlayer);
                 }
             }
             if(playerWho.MemberNumber == secondPlayer.MemberNumber){
-                InventoryWear(playerWho, bondageWear[-(playerTwoHeal)], bondageWhere[-(playerTwoHeal)]);
                 playerTwoHeal -= 1;
+                InventoryWear(playerWho, bondageWear[playerTwoHeal], bondageWhere[playerTwoHeal]);
                 if(playerTwoHeal == 0){
                     gameFinish(secondPlayer);
                 }
