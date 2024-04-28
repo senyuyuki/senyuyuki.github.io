@@ -9,7 +9,8 @@
         });
     Shirokarasu.hookFunction("ChatRoomMessage", 0, (args, next) => {
         let datas = args[0];
-        if(datas.Content == `请求纳米虫服务`){
+        let charName;
+        if(datas.Content == `请求纳米虫服务` && datas.Sender !== Player.MemberNumber){
             let charWho = ChatRoomCharacter.find(Element => Element.MemberNumber === datas.Sender);
             if(charWho.Nickname !== ""){
                 charName = charWho.Nickname;
@@ -21,7 +22,7 @@
             ChatRoomCharacterUpdate(charWho);
             ServerSend("ChatRoomChat",{Type:"Emote", Content:`*难以察觉的纳米虫海流向${charName}，迅速侵入解除了${charName}身上的道具`});
         }
-        if(datas.Content == `请求危险纳米虫服务`){
+        if(datas.Content == `请求危险纳米虫服务` && datas.Sender !== Player.MemberNumber){
             let charWho = ChatRoomCharacter.find(Element => Element.MemberNumber === datas.Sender);
             if(charWho.Nickname !== ""){
                 charName = charWho.Nickname;
