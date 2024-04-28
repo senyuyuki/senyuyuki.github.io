@@ -18,7 +18,7 @@
             else{
                 charName = charWho.Name;
             }
-            CharacterReleaseTotal(charWho);
+            CharacterRelease(charWho);
             ChatRoomCharacterUpdate(charWho);
             ServerSend("ChatRoomChat",{Type:"Emote", Content:`*难以察觉的纳米虫海流向${charName}，迅速侵入解除了${charName}身上的道具`});
         }
@@ -30,10 +30,9 @@
             else{
                 charName = charWho.Name;
             }
-            for(let i in charWho.Appearance){charWho.Appearance[i].Property = undefined};
             CharacterReleaseTotal(charWho);
             ChatRoomCharacterUpdate(charWho);
-            ServerSend("ChatRoomChat",{Type:"Emote", Content:`*纳米虫海微微散发着红光钻入${charName}身上的道具内，道具连带着锁逐渐被吞噬`});
+            ServerSend("ChatRoomChat",{Type:"Emote", Content:`*纳米虫海微微散发着红光钻入${charName}身体里，道具连带着衣服都一起逐渐被吞噬`});
         }
         next(args);
     })
