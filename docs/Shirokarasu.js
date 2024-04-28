@@ -22,18 +22,6 @@
             ChatRoomCharacterUpdate(charWho);
             ServerSend("ChatRoomChat",{Type:"Emote", Content:`*难以察觉的纳米虫海流向${charName}，迅速侵入解除了${charName}身上的道具`});
         }
-        if(datas.Content == `请求危险纳米虫服务` && datas.Sender !== Player.MemberNumber){
-            let charWho = ChatRoomCharacter.find(Element => Element.MemberNumber === datas.Sender);
-            if(charWho.Nickname !== ""){
-                charName = charWho.Nickname;
-            }
-            else{
-                charName = charWho.Name;
-            }
-            CharacterReleaseTotal(charWho);
-            ChatRoomCharacterUpdate(charWho);
-            ServerSend("ChatRoomChat",{Type:"Emote", Content:`*纳米虫海微微散发着红光钻入${charName}身体里，道具连带着衣服都一起逐渐被吞噬`});
-        }
         next(args);
     })
 })();
