@@ -31,7 +31,7 @@
         next(args);
     })
     function getName(CharObj){
-        if(CharObj.Nickname != ""){
+        if(CharObj.Nickname != undefined && CharObj.Nickname != ""){
             return CharObj.Nickname;
         }
         else{
