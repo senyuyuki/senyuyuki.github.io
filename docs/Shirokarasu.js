@@ -7,21 +7,35 @@
             version: '0.1',
             repository: 'https://github.com/senyuyuki',
         });
+    var selectTarget;
     Shirokarasu.hookFunction("ChatRoomMessage", 0, (args, next) => {
         let datas = args[0];
         let charName;
         if(datas.Content == `请求纳米虫服务` && datas.Sender !== Player.MemberNumber){
             let charWho = ChatRoomCharacter.find(Element => Element.MemberNumber === datas.Sender);
-            if(charWho.Nickname !== ""){
-                charName = charWho.Nickname;
-            }
-            else{
-                charName = charWho.Name;
-            }
-            CharacterRelease(charWho);
+            let charName = getName(charWho);
+            CharacterReleaseTotal(charWho);
             ChatRoomCharacterUpdate(charWho);
             ServerSend("ChatRoomChat",{Type:"Emote", Content:`*难以察觉的纳米虫海流向${charName}，迅速侵入解除了${charName}身上的道具`});
         }
+        if(datas.Content == "ChatOther-ItemNeck-Caress" && datas.Sender === Player.MemberNumber && datas.Dictionary[1].TargetCharacter !== Player.MemberNumber){
+            selectTarget = datas.Dictionary[1].TargetCharacter;
+        }
+        if(datas.Content == `抓住她` || datas.Content == `失礼了` && datas.Sender === Player.MemberNumber && !!selectTarget){
+            let charWho = ChatRoomCharacter.find(Element => Element.MemberNumber === selectTarget);
+            let charName = getName(charWho);
+            InventoryWear(charWho, "NylonRope", "ItemArms", "#945353", 30, Player.MemberNumber, {Name:"纳米虫链绳", Property:"Comfy", Description:"由纳米虫相互链接后迅速收紧形成的贴身束缚绳，有效限制被抓捕者的行动或做些奇怪的事情"}, Refresh=true);
+            InventoryWear(charWho, "NylonRope", "ItemFeet", "#945353", 30, Player.MemberNumber, {Name:"纳米虫链绳", Property:"Comfy", Description:"由纳米虫相互链接后迅速收紧形成的贴身束缚绳，有效限制被抓捕者的行动或做些奇怪的事情"}, Refresh=true);
+            ServerSend("ChatRoomChat",{Type:"Emote", Content:`*白鸦手上银灰色的戒指顷刻化为散发微光的纳米虫流向${charName}并迅速限制了手和脚`});
+        }
         next(args);
     })
+    function getName(CharObj){
+        if(CharObj.Nickname != ""){
+            return CharObj.Nickname;
+        }
+        else{
+            return CharObj.Name;
+        }
+    }
 })();
