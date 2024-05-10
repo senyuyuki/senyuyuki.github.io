@@ -25,7 +25,9 @@
             let charWho = ChatRoomCharacter.find(Element => Element.MemberNumber === selectTarget);
             let charName = getName(charWho);
             InventoryWear(charWho, "NylonRope", "ItemArms", "#945353", 30, Player.MemberNumber, {Name:"纳米虫链绳", Property:"Comfy", Description:"由纳米虫相互链接后迅速收紧形成的贴身束缚绳，有效限制被抓捕者的行动或做些奇怪的事情"});
+            ChatRoomCharacterUpdate(charWho);
             InventoryWear(charWho, "NylonRope", "ItemFeet", "#945353", 30, Player.MemberNumber, {Name:"纳米虫链绳", Property:"Comfy", Description:"由纳米虫相互链接后迅速收紧形成的贴身束缚绳，有效限制被抓捕者的行动或做些奇怪的事情"});
+            ChatRoomCharacterUpdate(charWho);
             ServerSend("ChatRoomChat",{Type:"Emote", Content:`*白鸦手上银灰色的戒指顷刻化为散发微光的纳米虫流向${charName}并迅速限制了手和脚`});
         }
         next(args);
